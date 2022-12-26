@@ -41,5 +41,11 @@ pipeline {
                 archiveArtifacts(artifacts: 'frontend/dist/frontend/*')
             }
         }
+
+        stage('Notify') {
+            steps {
+                sh 'curl -X POST -H \'Content-type: application/json\' --data \'{"message":"Антипов Стас собрал приложение."}\' https://api.pachca.com/webhooks/01GHKAEEBHC027DJAH7CHPTVF1'
+            }
+        }
     }
 }
