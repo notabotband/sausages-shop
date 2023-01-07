@@ -50,3 +50,4 @@ pachca-notification-frontend:
     - 'curl -X POST -H "Content-type: application/json" --data "{\"message\":\"Антипов Станислав собрал frontend приложения. Ссылка на артефакт: $CI_PROJECT_URL/-/jobs/artifacts/$CI_COMMIT_BRANCH/download?job=build-frontend-code-job\"}" "https://api.pachca.com/webhooks/01GHKAEEBHC027DJAH7CHPTVF1"'
   needs:
     - build-frontend-code-job
+    
