@@ -78,6 +78,10 @@ public class OrderController {
             .getProduct()
             .getId())))
           .collect(Collectors.toList());
+
+        if (!CollectionUtils.isEmpty(list)) {
+            throw new ResourceNotFoundException("Product not found");
+        }
     }
 
     public static class OrderForm {
