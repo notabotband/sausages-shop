@@ -67,7 +67,7 @@ spotbugs-sast:
 sonarqube-backend-sast:
   stage: test
   dependencies:
-    - build-frontend-code-job
+    - build-backend-code-job
   image: maven:3.8-openjdk-16
   script:
     - cd backend
@@ -81,7 +81,7 @@ sonarqube-backend-sast:
 sonarqube-frontend-sast:
   stage: test
   dependencies:
-    - build-backend-code-job
+    - build-frontend-code-job
   image: sonarsource/sonar-scanner-cli:latest
   script:
     - cd frontend
