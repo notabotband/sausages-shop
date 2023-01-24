@@ -72,6 +72,7 @@ public class OrderController {
     }
 
     private void validateProductsExistence(List<OrderProductDto> orderProducts) {
+
         List<OrderProductDto> list = orderProducts
           .stream()
           .filter(op -> Objects.isNull(productService.getProduct(op
@@ -82,6 +83,7 @@ public class OrderController {
         if (!CollectionUtils.isEmpty(list)) {
             throw new ResourceNotFoundException("Product not found");
         }
+
     }
 
     public static class OrderForm {
