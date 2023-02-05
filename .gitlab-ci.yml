@@ -40,7 +40,7 @@ build-frontend-code-job:
 pachca-notification-backend:
   stage: notify
   script:
-    - 'curl -X POST -H "Content-Type: application/json" --data "{\"chat_id\": \"${TELEGRAM_CANAL_ID}\", \"text\": \"Вышла новая версия backend сосисочной - ${VERSION}. Скачать backend можно по ссылке — ${env.NEXUS_REPO_URL}/sausage-store-antipov-stas-backend/sausage-store/${VERSION}/sausage-store-${VERSION}.jar \" https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage'
+    - 'curl -X POST -H "Content-Type: application/json" --data "{\"chat_id\": \"${TELEGRAM_CANAL_ID}\", \"text\": \"Вышла новая версия backend сосисочной - ${VERSION}. Скачать backend можно по ссылке — ${env.NEXUS_REPO_URL}/sausage-store-antipov-stas-backend/sausage-store/${VERSION}/sausage-store-${VERSION}.jar\" https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage'
   needs:
     - build-backend-code-job
 
