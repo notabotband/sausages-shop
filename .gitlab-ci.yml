@@ -4,9 +4,9 @@ variables:
 
 stages:
   - build
-  - notify
   - test
   - release
+  - notify
 
 include:
   - template: Security/SAST.gitlab-ci.yml
@@ -42,14 +42,14 @@ pachca-notification-backend:
   script:
     - 'curl -X POST -H "Content-Type: application/json" --data "{\"chat_id\": \"${TELEGRAM_CANAL_ID}\", \"text\": \"Вышла новая версия backend сосисочной - ${VERSION}. Скачать backend можно по ссылке — ${env.NEXUS_REPO_URL}/sausage-store-antipov-stas-backend/sausage-store/${VERSION}/sausage-store-${VERSION}.jar\" https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage'
   needs:
-    - build-backend-code-job
+    - upload-backend-release
 
 pachca-notification-frontend:
   stage: notify
   script:
     - 'curl -X POST -H "Content-Type: application/json" --data "{\"chat_id\": \"${TELEGRAM_CANAL_ID}\", \"text\": \"Вышла новая версия frontend сосисочной - ${VERSION}. Скачать frontend можно по ссылке — ${NEXUS_REPO_URL}/sausage-store-antipov-stas-frontend/sausage-store/${VERSION}/sausage-store-${VERSION}.tar.gz\" https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage'
   needs:
-    - build-frontend-code-job
+    - upload-frontend-release
 
 spotbugs-sast:
   dependencies:
