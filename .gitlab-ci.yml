@@ -16,13 +16,10 @@ build-backend-code-job:
   script:
     - cd backend
     - mvn package -Dmaven.repo.local=${MAVEN_REPO_PATH} -Dversion.application=${VERSION}
-  artifacts:
-    paths:
-      - backend/target/sausage-store-${VERSION}.jar
-      - ${CI_PROJECT_DIR}/.m2/
   cache:
+    key: 'build-backend'
     paths:
-      - ${MAVEN_REPO_PATH}
+      - ${CI_PROJECT_DIR}/backend/.m2/repository
 
 build-frontend-code-job:
   stage: build
@@ -30,9 +27,10 @@ build-frontend-code-job:
     - cd frontend
     - npm install
     - npm run build
-  artifacts:
+  cache:
+    key: 'build-backend'
     paths:
-      - frontend/dist/frontend
+      - ${CI_PROJECT_DIR}/frontend/.npm/
 
 spotbugs-sast:
   stage: test
@@ -84,7 +82,7 @@ upload-frontend-release:
   dependencies:
     - build-frontend-code-job
   script:
-    - cd frontend/dist
+    - cd ${CI_PROJECT_DIR}frontend/.npm/
     - tar czvf sausage-store-${VERSION}.tar.gz frontend
     - curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" --upload-file sausage-store-${VERSION}.tar.gz ${NEXUS_REPO_URL}/sausage-store-antipov-stas-frontend/sausage-store/${VERSION}/sausage-store-${VERSION}.tar.gz
 
