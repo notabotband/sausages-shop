@@ -13,9 +13,6 @@ include:
 
 build-backend-code-job:
   stage: build
-  only:
-    changes:
-      - backend/*
   script:
     - cd backend
     - mvn package -Dmaven.repo.local=${MAVEN_REPO_PATH}
@@ -26,9 +23,6 @@ build-backend-code-job:
 
 build-frontend-code-job:
   stage: build
-  only:
-    changes:
-      - frontend/*
   script:
     - cd frontend
     - npm install
