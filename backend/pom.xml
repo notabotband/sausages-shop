@@ -96,6 +96,14 @@
         </repository>
     </distributionManagement>
 
+    <distributionManagement>
+        <repository>
+            <id>sausage-store</id>
+            <name>sausage-store</name>
+            <url>${env.NEXUS_REPO_URL}/sausage-store-fio-backend/</url>
+        </repository>
+    </distributionManagement>
+
     <build>
         <plugins>
             <plugin>
