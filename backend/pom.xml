@@ -89,11 +89,11 @@
     </dependencies>
 
     <distributionManagement>
-        <mixed>
+        <repository>
             <id>sausage-store</id>
             <name>sausage-store</name>
             <url>${env.NEXUS_REPO_URL}/sausage-store-antipov-stas-backend/</url>
-        </mixed>
+        </repository>
     </distributionManagement>
 
     <build>
