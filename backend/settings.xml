@@ -3,8 +3,8 @@
     <servers>
         <server>
             <id>sausage-store-antipov-stas-backend</id>
-            <username>${env.NEXUS_REPO_USER}</username>
-            <password>${env.NEXUS_REPO_PASS}</password>
+            <username>std-013-59</username>
+            <password>mjf58J9P</password>
         </server>
     </servers>
 </settings>
