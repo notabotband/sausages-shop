@@ -90,8 +90,8 @@
 
     <distributionManagement>
         <repository>
-            <id>sausage-store</id>
-            <name>sausage-store</name>
+            <id>sausage-store-antipov-stas-backend</id>
+            <name>sausage-store-antipov-stas-backend</name>
             <url>${env.NEXUS_REPO_URL}/sausage-store-antipov-stas-backend/</url>
         </repository>
     </distributionManagement>
