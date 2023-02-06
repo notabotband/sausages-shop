@@ -39,6 +39,8 @@ build-frontend-code-job:
 
 spotbugs-sast:
   stage: test
+  dependencies:
+    - build-backend-code-job
   variables:
     COMPILE: "false"
     SAST_JAVA_VERSION: 17
