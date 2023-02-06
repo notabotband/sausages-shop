@@ -110,4 +110,4 @@ pachca-notification-frontend:
   needs:
     - upload-frontend-release
   script:
-    - "curl -X POST -H 'Content-type: application/json' --data '{\"chat_id\": \"-1001860249898\", \"text\": \"Вышла новая версия frontend '$CI_PROJECT_NAME' - '${VERSION}'. Скачать frontend можно по ссылке — '${NEXUS_REPO_URL}'/sausage-store-antipov-stas-frontend/com/yandex/practicum/devops/sausage-store/'${VERSION}'/sausage-store-'${VERSION}'.tar.gz \"}' https://api.telegram.org/bot'${TELEGRAM_BOT_TOKEN}'/sendMessage"
+    - "curl -X POST -H 'Content-type: application/json' --data '{\"chat_id\": \"-1001860249898\", \"text\": \"Вышла новая версия frontend '$CI_PROJECT_NAME' - '${VERSION}'. Скачать frontend можно по ссылке — '${NEXUS_REPO_URL}'/sausage-store-antipov-stas-frontend/com/yandex/practicum/devops/sausage-store/'${VERSION}'/sausage-store-'${VERSION}'.tar.gz \"}' https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage"
