@@ -99,11 +99,15 @@ upload-frontend-release:
 
 pachca-notification-backend:
   stage: notify
+  needs:
+    - upload-backend-release
   script:
-    - "curl -X POST -H 'Content-type: application/json' --data '{\"chat_id\": \"${TELEGRAM_BOT_TOKEN}\", \"text\": \"Вышла новая версия backend '$CI_PROJECT_NAME' - '${VERSION}'. Скачать backend можно по ссылке — '${NEXUS_REPO_URL}'/sausage-store-antipov-stas-backend/com/yandex/practicum/devops/sausage-store/'${VERSION}'/sausage-store-'${VERSION}'.jar \"}' https://api.telegram.org/bot5933756043:AAE8JLL5KIzgrNBeTP5e-1bkbJy4YRoeGjs/sendMessage"
+    - "curl -X POST -H 'Content-type: application/json' --data '{\"chat_id\": \"'${TELEGRAM_BOT_TOKEN}'\", \"text\": \"Вышла новая версия backend '$CI_PROJECT_NAME' - '${VERSION}'. Скачать backend можно по ссылке — '${NEXUS_REPO_URL}'/sausage-store-antipov-stas-backend/com/yandex/practicum/devops/sausage-store/'${VERSION}'/sausage-store-'${VERSION}'.jar \"}' https://api.telegram.org/bot5933756043:AAE8JLL5KIzgrNBeTP5e-1bkbJy4YRoeGjs/sendMessage"
 
 
 pachca-notification-frontend:
   stage: notify
+  needs:
+    - upload-frontend-release
   script:
     - "curl -X POST -H 'Content-type: application/json' --data '{\"chat_id\": \"-1001860249898\", \"text\": \"Вышла новая версия frontend '$CI_PROJECT_NAME' - '${VERSION}'. Скачать frontend можно по ссылке — '${NEXUS_REPO_URL}'/sausage-store-antipov-stas-frontend/com/yandex/practicum/devops/sausage-store/'${VERSION}'/sausage-store-'${VERSION}'.tar.gz \"}' https://api.telegram.org/bot'${TELEGRAM_BOT_TOKEN}'/sendMessage"
