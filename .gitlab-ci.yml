@@ -45,6 +45,8 @@ spotbugs-sast:
     COMPILE: "false"
     SAST_JAVA_VERSION: 17
     MAVEN_REPO_PATH: ${MAVEN_REPO_PATH}
+  needs:
+    - build-backend-code-job
 
 sonarqube-backend-sast:
   stage: test
