@@ -82,9 +82,9 @@ upload-frontend-release:
   dependencies:
     - build-frontend-code-job
   script:
-    - cd ${CI_PROJECT_DIR}/frontend/dist
+    - cd frontend/dist
     - tar czvf sausage-store-${VERSION}.tar.gz frontend
-    - curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" --upload-file sausage-store-${VERSION}.tar.gz ${NEXUS_REPO_URL}/sausage-store-antipov-stas-frontend/sausage-store/${VERSION}/sausage-store-${VERSION}.tar.gz
+    - curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" --upload-file sausage-store-${VERSION}.tar.gz ${NEXUS_REPO_URL}/sausage-store-antipov-stas-frontend/sausage-store/${VERSION}/
 
 pachca-notification-backend:
   stage: notify
