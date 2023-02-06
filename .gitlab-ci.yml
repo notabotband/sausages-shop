@@ -15,11 +15,11 @@ build-backend-code-job:
   stage: build
   script:
     - cd backend
-    - mvn package -Dmaven.repo.local=${MAVEN_REPO_PATH}
+    - mvn package -Dmaven.repo.local=${MAVEN_REPO_PATH} -Dversion.application=${VERSION}
   artifacts:
     paths:
-      - ${CI_PROJECT_DIR}/.m2/
       - backend/target/sausage-store-${VERSION}.jar
+      - ${CI_PROJECT_DIR}/.m2/
   cache:
     paths:
       - ${MAVEN_REPO_PATH}
@@ -101,4 +101,4 @@ pachca-notification-frontend:
   needs:
     - upload-frontend-release
   script:
-    - "curl -X POST -H 'Content-type: application/json' --data '{\"chat_id\": \"${TELEGRAM_BOT_TOKEN}\", \"text\": \"Вышла новая версия frontend '$CI_PROJECT_NAME' - '${VERSION}'. Скачать frontend можно по ссылке — '${NEXUS_REPO_URL}'/sausage-store-antipov-stas-frontend/com/yandex/practicum/devops/sausage-store/'${VERSION}'/sausage-store-'${VERSION}'.tar.gz \"}' https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage"
+    - "curl -X POST -H 'Content-type: application/json' --data '{\"chat_id\": ${TELEGRAM_BOT_TOKEN}, \"text\": \"Вышла новая версия frontend '$CI_PROJECT_NAME' - '${VERSION}'. Скачать frontend можно по ссылке — '${NEXUS_REPO_URL}'/sausage-store-antipov-stas-frontend/com/yandex/practicum/devops/sausage-store/'${VERSION}'/sausage-store-'${VERSION}'.tar.gz \"}' https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage"
