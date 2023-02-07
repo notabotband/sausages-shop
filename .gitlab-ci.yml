@@ -83,6 +83,8 @@ upload-backend-release:
   only:
     changes:
       - backend/*
+  needs:
+    - build-backend-code-job
   script:
     - cd backend
     - mvn -Dmaven.repo.local=${MAVEN_REPO_PATH} -s settings.xml -Dversion.application=${VERSION} -DskipTests deploy
