@@ -33,7 +33,11 @@ build-frontend-code-job:
     - cd frontend
     - npm install
     - npm run build
+  cache:
+    paths:
+      - .npm/
   artifacts:
+    name: 'build-frontend'
     paths:
       - frontend/dist/frontend
 
