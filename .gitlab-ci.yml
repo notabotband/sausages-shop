@@ -96,6 +96,9 @@ upload-frontend-release:
 
 pachca-notification-backend:
   stage: notify
+  only:
+    changes:
+      - backend/*
   needs:
     - upload-backend-release
   script:
@@ -104,6 +107,9 @@ pachca-notification-backend:
 
 pachca-notification-frontend:
   stage: notify
+  only:
+    changes:
+      - frontend/*
   needs:
     - upload-frontend-release
   script:
