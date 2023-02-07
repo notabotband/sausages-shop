@@ -39,7 +39,6 @@ build-frontend-code-job:
       - ${CI_PROJECT_DIR}/frontend/dist/
 
 spotbugs-sast:
-  stage: test
   dependencies:
     - build-backend-code-job
   variables:
