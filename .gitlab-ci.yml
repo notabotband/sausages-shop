@@ -30,7 +30,7 @@ build-frontend-code-job:
   cache:
     key: 'build-backend'
     paths:
-      - ${CI_PROJECT_DIR}/frontend/.npm/
+      - ${CI_PROJECT_DIR}/frontend/dist/
 
 spotbugs-sast:
   stage: test
@@ -72,15 +72,13 @@ sonarqube-frontend-sast:
 upload-backend-release:
   stage: release
   dependencies:
-    - build-frontend-code-job
+    - build-backend-code-job
   script:
     - cd backend
     - mvn -Dmaven.repo.local=${MAVEN_REPO_PATH} -s settings.xml -Dversion.application=${VERSION} -DskipTests deploy
 
 upload-frontend-release:
   stage: release
-  dependencies:
-    - build-frontend-code-job
   script:
     - cd frontend/dist
     - tar czvf sausage-store-${VERSION}.tar.gz frontend
