@@ -124,5 +124,6 @@
       }
     }
   },
-  "defaultProject": "frontend"
+  "defaultProject": "frontend",
+
 }
