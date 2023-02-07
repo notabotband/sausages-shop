@@ -100,7 +100,7 @@ upload-frontend-release:
     - tar czvf sausage-store-${VERSION}.tar.gz frontend
     - curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" --upload-file sausage-store-${VERSION}.tar.gz ${NEXUS_REPO_URL}/sausage-store-antipov-stanislav-frontend/sausage-store/${VERSION}/sausage-store-${VERSION}.tar.gz
 
-pachca-notification-backend:
+telegram-notification-backend:
   stage: notify
   only:
     changes:
@@ -111,7 +111,7 @@ pachca-notification-backend:
     - "curl -X POST -H 'Content-type: application/json' --data '{\"chat_id\": \"'${TELEGRAM_CANAL_ID}'\", \"text\": \"Вышла новая версия backend '$CI_PROJECT_NAME' - '${VERSION}'. Скачать backend можно по ссылке — '${NEXUS_REPO_URL}'/sausage-store-antipov-stanislav-backend/com/yandex/practicum/devops/sausage-store/'${VERSION}'/sausage-store-'${VERSION}'.jar \"}' https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage"
 
 
-pachca-notification-frontend:
+telegram-notification-frontend:
   stage: notify
   only:
     changes:
