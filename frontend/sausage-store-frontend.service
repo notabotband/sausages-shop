@@ -1,0 +1,11 @@
+[Unit]
+Description=Frontend start
+
+[Service]
+ExecStart=http-server /home/front-user/var/www-data/dist/frontend/ -p 8443 --proxy http://localhost:8080
+User=front-user
+Restart=always
+StandardOutput=append:/logs/out-front.log
+
+[Install]
+WantedBy=multi-user.target
