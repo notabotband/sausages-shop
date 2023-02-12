@@ -16,15 +16,15 @@ before_script:
   - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
   - chmod 644 ~/.ssh/known_hosts
 
-stages:
-  - build
-  - release
-  - test
-  - notify
-  - deploy
-
 include:
   - template: Security/SAST.gitlab-ci.yml
+
+stages:
+  - build
+  - test
+  - release
+  - notify
+  - deploy
 
 build:
   stage: build
@@ -39,7 +39,7 @@ build:
 sonarqube-frontend-sast:
   stage: test
   dependencies:
-    - build-frontend-code-job
+    - build
   image: sonarsource/sonar-scanner-cli:latest
   script:
     - cd frontend
