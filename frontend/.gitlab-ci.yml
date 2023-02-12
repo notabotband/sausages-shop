@@ -18,8 +18,8 @@ before_script:
 
 stages:
   - build
-  - test
   - release
+  - test
   - notify
   - deploy
 
@@ -32,6 +32,20 @@ build:
   only:
     changes:
       - frontend/*
+
+sonarqube-frontend-sast:
+  stage: test
+  dependencies:
+    - build-frontend-code-job
+  image: sonarsource/sonar-scanner-cli:latest
+  script:
+    - cd frontend
+    - >
+      sonar-scanner -Dsonar.sources=.
+      -Dsonar.projectName=${SONAR_FRONTEND_PROJECT_NAME}
+      -Dsonar.projectKey=${SONAR_FRONTEND_PROJECT_KEY}
+      -Dsonar.host.url=${SONARQUBE_URL}
+      -Dsonar.login=${SONAR_FRONTEND_LOGIN}
 
 release:
   stage: release
