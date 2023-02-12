@@ -23,6 +23,9 @@ stages:
   - notify
   - deploy
 
+include:
+  - template: Security/SAST.gitlab-ci.yml
+
 build:
   stage: build
   script:
