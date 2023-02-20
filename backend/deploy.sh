@@ -1,11 +1,11 @@
 #! /bin/bash
 #Если свалится одна из команд, рухнет и весь скрипт
-set -xe
+set -x
 #Перезаливаем дескриптор сервиса на ВМ для деплоя
-sudo cp -rf sausage-store-backend.service /etc/systemd/system/sausage-store-backend.service
-sudo rm -f /home/jarservice/sausage-store.jar||true
+#sudo cp -rf sausage-store-backend.service /etc/systemd/system/sausage-store-backend.service
+#sudo rm -f /home/jarservice/sausage-store.jar||true
 #Переносим артефакт в нужную папку
-curl -u std-013-59:mjf58J9P -o sausage-store.jar https://nexus.praktikum-services.ru/repository/sausage-store-antipov-stanislav-backend/com/yandex/practicum/devops/sausage-store/1.0.422548/sausage-store-1.0.422548.jar
+#curl -u std-013-59:mjf58J9P -o sausage-store.jar https://nexus.praktikum-services.ru/repository/sausage-store-antipov-stanislav-backend/com/yandex/practicum/devops/sausage-store/1.0.422548/sausage-store-1.0.422548.jar
 curl -u ${NEXUS_REPO_USER}:${NEXUS_REPO_PASS} -o sausage-store.jar ${NEXUS_REPO_URL}/sausage-store-antipov-stanislav-backend/com/yandex/practicum/devops/sausage-store/${VERSION}/sausage-store-${VERSION}.jar
 sudo cp ./sausage-store.jar /home/jarservice/sausage-store.jar||true #"<...>||true" говорит, если команда обвалится — продолжай#Обновляем конфиг systemd с помощью рестарта
 sudo systemctl daemon-reload
