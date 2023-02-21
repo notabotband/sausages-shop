@@ -7,7 +7,7 @@ Environment=REPORT_PATH=/log/reports
 Environment=LOG_PATH=/log
 StandardOutput=file:/opt/log/sausage-store-backend.log
 Restart=always
-ExecStart=/usr/bin/java \
+ExecStart=java \
 -Dmyserver.basePath='/home/jarservice/' \
 -Dmyserver.bindAddr='127.0.0.1' \
 -Dmyserver.bindPort='8080' \
