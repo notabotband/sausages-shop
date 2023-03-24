@@ -146,14 +146,6 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>9.8.1</version>
-                <configuration>
-                    <user>user</user>
-                    <password>sec_password</password>
-                    <url>urlDatabase</url>
-                    <locations>
-                        <location>databaseLocations</location>
-                    </locations>
-                </configuration>
             </plugin>
         </plugins>
     </build>
