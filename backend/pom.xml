@@ -22,7 +22,12 @@
         <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.language>java</sonar.language>
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+        <flyway.locations>databaseLocations</flyway.locations>
+        <flyway.user>databaseUser</flyway.user>
+        <flyway.password>databasePassword</flyway.password>
+        <flyway.url>urlDatabase</flyway.url>
     </properties>
+
     <dependencies>
 
        <dependency>
@@ -93,6 +98,13 @@
             <artifactId>junit-vintage-engine</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependencies>
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <version>9.16.1</version>
+            </dependency>
+        </dependencies>
     </dependencies>
 
     <distributionManagement>
@@ -128,6 +140,24 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>9.16.1</version>
+                <configuration>
+                    <user>databaseUser</user>
+                    <password>databasePassword</password>
+                    <url>urlDatabase</url>
+                    <locations>
+                        <location>databaseLocations</location>
+                    </locations>
+                </configuration>
             </plugin>
         </plugins>
     </build>

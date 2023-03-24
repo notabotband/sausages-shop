@@ -1,0 +1,1 @@
+SELECT COUNT(*) FROM order_product WHERE product_id = 2
