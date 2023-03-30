@@ -134,13 +134,6 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>9.8.1</version>
                 <configuration>
-                    <url>jdbc:postgresql://${env.PSQL_URL}:${env.PSQL_PORT}/${env.PSQL_NAME}</url>
-                    <user>${env.PSQL_USER}</user>
-                    <password>${env.PSQL_PASSWORD}</password>
-                    <table>schema_history</table>
-                    <baseLineVersion>2.0</baseLineVersion>
-                    <baseLineDescription>Migration</baseLineDescription>
-                    <skip>false</skip>
                     <locations>
                         <location>classpath:src/main/resources/db/migration</location>
                     </locations>
