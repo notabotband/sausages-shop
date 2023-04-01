@@ -135,7 +135,7 @@
                 <version>9.8.1</version>
                 <configuration>
                     <locations>
-                        <location>classpath:db/migration</location>
+                        <location>classpath:src/main/resources/db/migration</location>
                     </locations>
                 </configuration>
             </plugin>
