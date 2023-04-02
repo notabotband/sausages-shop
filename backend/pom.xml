@@ -24,7 +24,6 @@
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
     </properties>
     <dependencies>
-
        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
@@ -36,7 +35,6 @@
             <artifactId>postgresql</artifactId>
             <version>42.3.1</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -83,7 +81,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -99,8 +96,12 @@
             <artifactId>junit-vintage-engine</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>8.0.5</version>
+        </dependency>
     </dependencies>
-
     <distributionManagement>
         <repository>
             <id>sausage-store-antipov-stanislav-backend</id>
@@ -108,7 +109,6 @@
             <url>${env.NEXUS_REPO_URL}/sausage-store-antipov-stanislav-backend/</url>
         </repository>
     </distributionManagement>
-
     <build>
         <plugins>
             <plugin>
@@ -135,7 +135,16 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>8.0.5</version>
+                <configuration>
+                    <locations>
+                        <location>classpath:src/main/resources/db/migration</location>
+                    </locations>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
 </project>
