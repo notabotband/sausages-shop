@@ -22,5 +22,6 @@ ExecStart=/usr/bin/java \
 -jar '/home/student/sausage-store.jar'
 SuccessExitStatus=143
 
+
 [Install]
 WantedBy=multi-user.target
