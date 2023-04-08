@@ -16,6 +16,8 @@ ExecStart=/usr/bin/java \
 -Dspring.datasource.username=${PSQL_USER} \
 -Dspring.datasource.password=${PSQL_PASSWORD}
 -Dspring.flyway.baselineOnMigrate=true \
+-Djavax.net.ssl.trustStore=/home/student/YATrustStore
+-Djavax.net.ssl.trustStorePassword=superpass"
 -Dspring.data.mongodb.uri=mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:27018/${MONGO_DATABASE}?tls=true
 -jar '/home/student/sausage-store.jar'
 SuccessExitStatus=143
