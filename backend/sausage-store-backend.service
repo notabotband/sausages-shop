@@ -7,7 +7,7 @@ Environment=REPORT_PATH=/log/reports
 Environment=LOG_PATH=/log
 StandardOutput=file:/opt/log/sausage-store-backend.log
 Restart=always
-ExecStart=/usr/bin/java -D -jar '/home/student/sausage-store.jar' \
+ExecStart=/usr/bin/java -jar '/home/student/sausage-store.jar' \
 -Dmyserver.basePath='/home/student/' \
 -Dmyserver.bindAddr='127.0.0.1' \
 -Dmyserver.bindPort='8080' \
@@ -16,7 +16,10 @@ ExecStart=/usr/bin/java -D -jar '/home/student/sausage-store.jar' \
 -Dspring.datasource.username=${PSQL_USER} \
 -Dspring.datasource.password=${PSQL_PASSWORD}
 -Dspring.flyway.baselineOnMigrate=true \
--Dspring.data.mongodb.uri=mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:27018/${MONGO_DATABASE}?tls=true -Djavax.net.ssl.trustStore=/home/student/YATrustStore -Djavax.net.ssl.trustStorePassword=superpass
+-Djavax.net.ssl.trustStore=/home/student/YATrustStore \
+-Djavax.net.ssl.trustStorePassword=superpass \
+-Dspring.data.mongodb.host: mongodb \
+-Dspring.data.mongodb.uri=mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:27018/${MONGO_DATABASE}?tls=true
 
 SuccessExitStatus=143
 
