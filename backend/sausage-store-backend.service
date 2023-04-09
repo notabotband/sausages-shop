@@ -18,7 +18,7 @@ ExecStart=/usr/bin/java -jar '/home/student/sausage-store.jar' \
 -Dspring.flyway.baselineOnMigrate=true \
 -Dspring.data.mongodb.host=${MONGO_HOST} \
 -Dspring.data.mongodb.port=27018 \
--Dspring.data.mongodb.uri=mongodb://rc1a-xb6q7pmw36t77ryz.mdb.yandexcloud.net:27018/std-013-59?replicaSet=rs01&appName=mongosh+1.1.9&ssl=true&tls=true -Djavax.net.ssl.trustStore=/home/student/YATrustStore -Djavax.net.ssl.trustStorePassword=superpass
+-Dspring.data.mongodb.uri=mongodb://rc1a-xb6q7pmw36t77ryz.mdb.yandexcloud.net:27018/std-013-59?replicaSet=rs01&tls=true -Djavax.net.ssl.trustStore=/home/student/YATrustStore -Djavax.net.ssl.trustStorePassword=superpass
 SuccessExitStatus=143
 
 [Install]
