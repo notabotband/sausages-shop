@@ -9,3 +9,4 @@ StandardOutput=append:/opt/log/sausage-store-frontend.log
 
 [Install]
 WantedBy=multi-user.target
+
