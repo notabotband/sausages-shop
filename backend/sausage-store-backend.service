@@ -2,21 +2,22 @@
 Description=Sausage-store
 
 [Service]
-User=jarservice
+User=student
 Environment=REPORT_PATH=/log/reports
 Environment=LOG_PATH=/log
 StandardOutput=file:/opt/log/sausage-store-backend.log
 Restart=always
-ExecStart=java \
--Dmyserver.basePath='/home/jarservice/' \
+ExecStart=/usr/bin/java \
+-Dmyserver.basePath='/home/student/' \
 -Dmyserver.bindAddr='127.0.0.1' \
 -Dmyserver.bindPort='8080' \
 -Dmyserver.hostName='Sausage-store' \
--jar '/home/jarservice/sausage-store.jar'
---spring.datasource.url=jdbc:postgresql://${PSQL_HOST}:${PSQL_PORT}/${PSQL_NAME} \
---spring.datasource.username=${PSQL_USER} \
---spring.datasource.password=${PSQL_PASSWORD}
---spring.flyway.baselineOnMigrate=true \
+-Dspring.datasource.url=jdbc:postgresql://${PSQL_HOST}:${PSQL_PORT}/${PSQL_NAME} \
+-Dspring.datasource.username=${PSQL_USER} \
+-Dspring.datasource.password=${PSQL_PASSWORD} \
+-Dspring.data.mongodb.uri=mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:27018/${MONGO_DATABASE}?tls=true \
+-Dspring.flyway.baselineOnMigrate=true \
+-jar '/home/student/sausage-store.jar'
 SuccessExitStatus=143
 
 [Install]
