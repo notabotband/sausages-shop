@@ -2,7 +2,7 @@
 Description=Frontend start
 
 [Service]
-ExecStart=sudo http-server /home/front-user/frontend/ -p 8443 --proxy http://localhost:8080
+ExecStart=http-server /home/front-user/frontend/ -p 8443 --proxy http://localhost:8080
 User=front-user
 Restart=always
 StandardOutput=append:/opt/log/sausage-store-frontend.log
