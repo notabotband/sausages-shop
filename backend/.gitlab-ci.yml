@@ -1,8 +1,8 @@
 stages:
   - build-jar
   - build-docker
-#  - test-sonar
-#  - test
+  - test-sonar
+  - test
   - release
   - notification
   - deploy
@@ -37,19 +37,19 @@ spotbugs-sast:
     COMPILE: "false"
     MAVEN_REPO_PATH: ${CI_PROJECT_DIR}/.m2/repository
 
-#sonarqube-backend-sast:
-#  stage: test-sonar
-#  dependencies:
-#    - build
-#  image: maven:3.8-openjdk-16
-#  script:
-#    - cd backend
-#    - >
-#      mvn verify sonar:sonar -Dsonar.qualitygate.wait=true
-#      -Dsonar.projectName=${SONAR_BACKEND_PROJECT_NAME}
-#      -Dsonar.projectKey=${SONAR_BACKEND_PROJECT_KEY}
-#      -Dsonar.host.url=${SONARQUBE_URL}
-#      -Dsonar.login=${SONAR_BACKEND_LOGIN}
+sonarqube-backend:
+  image:
+    name: maven:3.8-openjdk-16
+  variables:
+    SONAR_HOST_URL: "${SONAR_HOST_URL}"
+    SONAR_TOKEN: "${SONAR_TOKEN}"
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0"
+  stage: test-sonar
+  script:
+    - cd backend
+    - mvn -X verify sonar:sonar -Dsonar.projectKey=${SONAR_BACKEND_PROJECT_KEY}
+  allow_failure: true
 
 build-backend:
   stage: build-docker
