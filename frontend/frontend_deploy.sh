@@ -1,7 +1,7 @@
 #!/bin/bash
 docker network create -d bridge sausage_network || true
-docker login gitlab.praktikum-services.ru:3000 -u $DOCKER_GITLAB_USER -p $DOCKER_GITLAB_TOCKEN
-docker pull gitlab.praktikum-services.ru:3000/std-013-59/sausage-store/sausage-frontend:$VERSION
+docker login gitlab.praktikum-services.ru:5050 -u $DOCKER_GITLAB_USER -p $DOCKER_GITLAB_TOCKEN
+docker pull gitlab.praktikum-services.ru:5050/std-013-59/sausage-store/sausage-frontend:$VERSION
 
 docker stop sausage-frontend || true
 docker rm sausage-frontend || true
@@ -11,4 +11,4 @@ docker run -d --name sausage-frontend \
     --restart always \
     --env-file .env \
     -p 8082:80 \
-    gitlab.praktikum-services.ru:3000/std-013-59/sausage-store/sausage-frontend:$VERSION
+    gitlab.praktikum-services.ru:5050/std-013-59/sausage-store/sausage-frontend:$VERSION
