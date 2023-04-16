@@ -16,3 +16,4 @@ EXPOSE 8080
 # приложение будет запускаться под пользователем jaruser
 USER jaruser
 ENTRYPOINT ["dumb-init", "java", "-jar", "-Dmyserver.bindPort=8080", "./sausage-store.jar"]
+
