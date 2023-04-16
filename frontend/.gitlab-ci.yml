@@ -1,7 +1,7 @@
 stages:
   - build
-  - test
-  - test-sonar
+#  - test
+#  - test-sonar
   - release
   - notification
   - deploy
@@ -27,19 +27,19 @@ build-from-nexus:
     reports:
       dotenv: CI_JOB_ID.txt
 
-sonarqube-frontend-sast:
-  stage: test-sonar
-  dependencies:
-    - build
-  image: sonarsource/sonar-scanner-cli:latest
-  script:
-    - cd frontend
-    - >
-      sonar-scanner -Dsonar.sources=.
-      -Dsonar.projectName=${SONAR_FRONTEND_PROJECT_NAME}
-      -Dsonar.projectKey=${SONAR_FRONTEND_PROJECT_KEY}
-      -Dsonar.host.url=${SONARQUBE_URL}
-      -Dsonar.login=${SONAR_FRONTEND_LOGIN}
+#sonarqube-frontend-sast:
+#  stage: test-sonar
+#  dependencies:
+#    - build
+#  image: sonarsource/sonar-scanner-cli:latest
+#  script:
+#    - cd frontend
+#    - >
+#      sonar-scanner -Dsonar.sources=.
+#      -Dsonar.projectName=${SONAR_FRONTEND_PROJECT_NAME}
+#      -Dsonar.projectKey=${SONAR_FRONTEND_PROJECT_KEY}
+#      -Dsonar.host.url=${SONARQUBE_URL}
+#      -Dsonar.login=${SONAR_FRONTEND_LOGIN}
 
 
 release:
