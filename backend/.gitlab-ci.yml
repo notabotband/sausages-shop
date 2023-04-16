@@ -1,6 +1,7 @@
 stages:
   - build-jar
   - build-docker
+  - test-sonar
   - test
   - release
   - notification
@@ -37,7 +38,7 @@ spotbugs-sast:
     MAVEN_REPO_PATH: ${CI_PROJECT_DIR}/.m2/repository
 
 sonarqube-backend-sast:
-  stage: test
+  stage: test-sonar
   dependencies:
     - build
   image: maven:3.8-openjdk-16

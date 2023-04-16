@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - test-sonar
   - release
   - notification
   - deploy
@@ -27,7 +28,7 @@ build-from-nexus:
       dotenv: CI_JOB_ID.txt
 
 sonarqube-frontend-sast:
-  stage: test
+  stage: test-sonar
   dependencies:
     - build
   image: sonarsource/sonar-scanner-cli:latest
