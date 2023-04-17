@@ -42,13 +42,20 @@ sonarqube-backend:
     name: maven:3.8-openjdk-16
   variables:
     SONAR_HOST_URL: "${SONARQUBE_URL}"
-    SONAR_TOKEN: "${SONAR_BACKEND_LOGIN}"
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    SONAR_BACKEND_LOGIN: "${SONAR_BACKEND_LOGIN}"
+    SONAR_BACKEND_PROJECT_KEY: "${SONAR_BACKEND_PROJECT_KEY}"
+    SONAR_BACKEND_PROJECT_NAME: "${SONAR_BACKEND_PROJECT_NAME}"
     GIT_DEPTH: "0"
   stage: test-sonar
   script:
     - cd backend
-    - mvn -X verify sonar:sonar -Dsonar.projectKey=${SONAR_BACKEND_PROJECT_KEY}
+    - >
+      mvn verify sonar:sonar -Dsonar.qualitygate.wait=true
+      -Dsonar.projectName=${SONAR_BACKEND_PROJECT_NAME}
+      -Dsonar.projectKey=${SONAR_BACKEND_PROJECT_KEY}
+      -Dsonar.host.url=${SONARQUBE_URL}
+      -Dsonar.login=${SONAR_BACKEND_LOGIN}
   allow_failure: true
 
 build-backend:
