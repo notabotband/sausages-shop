@@ -13,9 +13,10 @@ docker pull gitlab.praktikum-services.ru:5050/std-013-59/sausage-store/sausage-b
 docker stop backend || true
 docker rm backend || true
 set -e
-docker run -d --name backend \
+docker run -d --name sausage-backend \
     --network=sausage_network \
     --restart always \
     --pull always \
     --env-file .env \
     gitlab.praktikum-services.ru:5050/std-013-59/sausage-store/sausage-backend:latest
+

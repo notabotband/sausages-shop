@@ -11,4 +11,4 @@ docker run -d --name sausage-frontend \
     --restart always \
     --env-file .env \
     -p 8082:80 \
-    gitlab.praktikum-services.ru:5050/std-013-59/sausage-store/sausage-frontend:$VERSION
+    gitlab.praktikum-services.ru:5050/std-013-59/sausage-store/sausage-frontend:latest
