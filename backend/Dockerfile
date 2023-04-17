@@ -14,3 +14,4 @@ RUN apk --no-cache add curl \
 EXPOSE 8080
 USER jaruser
 ENTRYPOINT ["dumb-init", "java", "-jar", "-Dmyserver.bindPort=8080", "./sausage-store.jar"]
+
