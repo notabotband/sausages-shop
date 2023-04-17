@@ -34,7 +34,7 @@ build-jar:
 
 spotbugs-sast:
   variables:
-    COMPILE: "false"
+    COMPILE: "true"
     MAVEN_REPO_PATH: ${CI_PROJECT_DIR}/.m2/repository
 
 sonarqube-backend:
@@ -99,8 +99,8 @@ upload-backend-latest:
   script:
     - >
       docker pull $CI_REGISTRY_IMAGE/sausage-backend:${VERSION} &&
-      docker tag $CI_REGISTRY_IMAGE/sausage-backend:${VERSION} $CI_REGISTRY_IMAGE/sausage-backend:${VERSION} &&
-      docker push $CI_REGISTRY_IMAGE/sausage-backend:${VERSION}
+      docker tag $CI_REGISTRY_IMAGE/sausage-backend:${VERSION} $CI_REGISTRY_IMAGE/sausage-backend:latest &&
+      docker push $CI_REGISTRY_IMAGE/sausage-backend:latest
 
 deploy-backend:
   stage: deploy

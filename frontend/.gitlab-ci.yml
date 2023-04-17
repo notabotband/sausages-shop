@@ -85,8 +85,8 @@ upload-frontend-latest:
   script:
     - docker pull $CI_REGISTRY_IMAGE/sausage-frontend:${VERSION}
     # если образ прошел проверки в CI (сканирование, тесты и т.д), то тегаем latest
-    - docker tag $CI_REGISTRY_IMAGE/sausage-frontend:${VERSION} $CI_REGISTRY_IMAGE/sausage-frontend:${VERSION}
-    - docker push $CI_REGISTRY_IMAGE/sausage-frontend:${VERSION}
+    - docker tag $CI_REGISTRY_IMAGE/sausage-frontend:${VERSION} $CI_REGISTRY_IMAGE/sausage-frontend:latest
+    - docker push $CI_REGISTRY_IMAGE/sausage-frontend:latest
 
 deploy-frontend:
   stage: deploy
