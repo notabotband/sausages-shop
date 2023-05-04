@@ -20,3 +20,4 @@ docker run -d --name sausage-backend \
     --pull always \
     -p 8080:80 \
     gitlab.praktikum-services.ru:5050/std-013-59/sausage-store/sausage-backend:latest
+
