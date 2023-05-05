@@ -13,15 +13,4 @@ RUN apk --no-cache add curl \
     && chown jaruser:jaruser ./sausage-store.jar
 EXPOSE 8080
 USER jaruser
-ENTRYPOINT [
-    "dumb-init",
-    "java",
-    "-jar",
-    "-Dmyserver.bindPort=8080",
-    "-Dmyserver.bindAddr='127.0.0.1'",
-    "-Dmyserver.hostName='Sausage-store'",
-    "-Dspring.datasource.url=jdbc:postgresql://rc1b-txenjeot0qbcbnh3.mdb.yandexcloud.net:6432/std-013-59-test",
-    "-Dspring.datasource.username=std-013-59",
-    "-Dspring.datasource.password=230703Stas",
-    "./sausage-store.jar"
-]
+ENTRYPOINT ["dumb-init", "java", "-jar", "-Dmyserver.bindPort=8080", "-Dmyserver.bindAddr='127.0.0.1'", "-Dmyserver.hostName='Sausage-store'", "-Dspring.datasource.url=jdbc:postgresql://rc1b-txenjeot0qbcbnh3.mdb.yandexcloud.net:6432/std-013-59-test", "-Dspring.datasource.username=std-013-59", "-Dspring.datasource.password=230703Stas", "./sausage-store.jar"]
