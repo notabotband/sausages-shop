@@ -114,16 +114,15 @@ deploy-backend:
     - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
+    - export SPRING_VAULT_TOKEN="hvs.CAESIJT50Rg_tcDPl4vZIDc3dh4X1X7RDauGraXjSkwzXO6XGh4KHGh2cy52b1dsWGZpcWFla1haeXhHdGFSTWEyZ1E"
     - ssh ${DEV_USER}@${DEV_HOST}
       "export "VERSION=${VERSION}";
       export "SPRING_DATASOURCE_URL=${PSQL_HOST}";
-      export "CI_REGISTRY_USER=${CI_REGISTRY_USER}";
-      export "CI_JOB_TOKEN=${CI_JOB_TOKEN}";
-      export "CI_REGISTRY=${CI_REGISTRY}";
-      export "SPRING_VAULT_HOST=${SPRING_VAULT_HOST}";
-      export "SPRING_VAULT_TOKEN=${SPRING_VAULT_TOKEN}";
+      export "SPRING_DATASOURCE_USERNAME=$(vault kv get -field=spring.datasource.username secret/sausage-store)";
+      export "SPRING_DATASOURCE_PASSWORD=$(vault kv get -field=spring.datasource.password secret/sausage-store)";
+      export "SPRING_DATA_MONGODB_URI=$(vault kv get -field=spring.data.mongodb.uri secret/sausage-store)";
       /bin/bash -s " < ./backend/backend_deploy.sh
-    environment:
+  environment:
     name: staging
     url: https://${DEV_HOST}
   when: manual
