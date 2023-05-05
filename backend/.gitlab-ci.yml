@@ -116,8 +116,11 @@ deploy-backend:
   script:
     - ssh ${DEV_USER}@${DEV_HOST}
       "export "VERSION=${VERSION}";
+      export "SPRING_DATASOURCE_PORT=${PSQL_PORT}"
+      export "SPRING_DATASOURCE_NAME=${PSQL_NAME}"
       export "SPRING_DATASOURCE_URL=${PSQL_HOST}";
       export "SPRING_VAULT_TOKEN=hvs.CAESIJT50Rg_tcDPl4vZIDc3dh4X1X7RDauGraXjSkwzXO6XGh4KHGh2cy52b1dsWGZpcWFla1haeXhHdGFSTWEyZ1Es";
+      export "SPRING_VAULT_HOST=${SPRING_VAULT_HOST}";
       export "SPRING_DATASOURCE_USERNAME=std-013-59";
       export "SPRING_DATASOURCE_PASSWORD=230703Stas";
       export "SPRING_DATA_MONGODB_URI=$(vault kv get -field=spring.data.mongodb.uri secret/sausage-store)";
