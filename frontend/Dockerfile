@@ -21,5 +21,5 @@ RUN apk add --no-cache npm=~8.1.3-r0 \
     && npm install -g http-server@14.0.0
 USER www-data
 EXPOSE 80
-ENTRYPOINT ["http-server", "dist/frontend/", "-p", "88", "--proxy", "http://localhost:8888"]
+ENTRYPOINT ["http-server", "dist/frontend/", "-p", "80", "--proxy", "http://localhost:8888"]
 
