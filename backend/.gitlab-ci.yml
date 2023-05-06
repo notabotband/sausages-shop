@@ -114,12 +114,12 @@ deploy-backend:
     - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
+    - export VAULT_TOKEN="$(vault write -field=token auth/jwt/login role=sausage-store jwt=$CI_JOB_JWT)"
     - ssh ${DEV_USER}@${DEV_HOST}
       "export "VERSION=${VERSION}";
       export "SPRING_DATASOURCE_PORT=${PSQL_PORT}"
       export "SPRING_DATASOURCE_NAME=${PSQL_NAME}"
       export "SPRING_DATASOURCE_URL=${PSQL_HOST}";
-      export "SPRING_VAULT_TOKEN=hvs.CAESIJT50Rg_tcDPl4vZIDc3dh4X1X7RDauGraXjSkwzXO6XGh4KHGh2cy52b1dsWGZpcWFla1haeXhHdGFSTWEyZ1Es";
       export "SPRING_VAULT_HOST=${SPRING_VAULT_HOST}";
       export "SPRING_DATASOURCE_USERNAME=std-013-59";
       export "SPRING_DATASOURCE_PASSWORD=230703Stas";
