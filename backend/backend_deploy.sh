@@ -3,10 +3,10 @@ set +e
 touch .env
 cat > .env <<EOF
 SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
-SPRING_VAULT_TOKEN=${SPRING_VAULT_TOKEN}
-SPRING_VAULT_HOST=${SPRING_VAULT_HOST}
+SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME};
+SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD};
 EOF
-
+pwd
 docker network create -d bridge sausage_network || true
 docker login gitlab.praktikum-services.ru:5050 -u $DOCKER_GITLAB_USER -p $DOCKER_GITLAB_TOCKEN
 docker pull gitlab.praktikum-services.ru:5050/std-013-59/sausage-store/sausage-backend:latest
