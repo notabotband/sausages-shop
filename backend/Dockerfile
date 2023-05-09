@@ -8,10 +8,10 @@ RUN apk --no-cache add curl \
     && keytool -importcert -file YandexInternalRootCA.crt \
     -alias yandex -cacerts -storepass changeit -noprompt \
     && rm -rf YandexInternalRootCA.crt \
-    && addgroup --system jaruser \
-    && adduser -S -s /bin/false -G jaruser jaruser -D -H \
-    && chown jaruser:jaruser ./sausage-store.jar
+    && addgroup --system student \
+    && adduser -S -s /bin/false -G student student -D -H \
+    && chown student:student ./sausage-store.jar
 EXPOSE 8080
-USER jaruser
+USER student
 ENTRYPOINT ["dumb-init", "java", "-jar", "-Dmyserver.bindPort=8080", "./sausage-store.jar"]
 

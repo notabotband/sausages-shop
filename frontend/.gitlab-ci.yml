@@ -90,7 +90,7 @@ upload-frontend-latest:
 
 deploy-frontend:
   stage: deploy
-  image: alpine:3.15.0
+  image: vault:1.11.3
   before_script:
     - apk add openssh-client bash
     - eval $(ssh-agent -s)
@@ -101,11 +101,11 @@ deploy-frontend:
     - chmod 644 ~/.ssh/known_hosts
   script:
     - ssh ${DEV_USER}@${DEV_HOST}
-      "export "VERSION=${VERSION}";
+      "export "SPRING_VAULT_TOKEN=${SPRING_VAULT_TOKEN}";
       export "SPRING_DATASOURCE_URL=${PSQL_HOST}";
-      export "SPRING_DATASOURCE_USERNAME=${PSQL_USER}";
-      export "SPRING_DATASOURCE_PASSWORD=${PSQL_PASSWORD}";
-      export "SPRING_DATA_MONGODB_URI=${MONGO_DATABASE}";
+      export "SPRING_DATASOURCE_USERNAME=$(vault kv get -field=spring.datasource.username secret/sausage-store)";
+      export "SPRING_DATASOURCE_PASSWORD=$(vault kv get -field=spring.datasource.password secret/sausage-store)";
+      export "SPRING_DATA_MONGODB_URI=$(vault kv get -field=spring.data.mongodb.uri secret/sausage-store)";
       export "DOCKER_GITLAB_USER=${DOCKER_GITLAB_USER}";
       export "DOCKER_GITLAB_TOCKEN=${DOCKER_GITLAB_TOCKEN}";
       /bin/bash -s " < ./frontend/frontend_deploy.sh
