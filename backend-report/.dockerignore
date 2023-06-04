@@ -1,4 +1,4 @@
 .gitlab-ci.yml
 target/
-.env
+.envq
 Dockerfile
