@@ -1,10 +1,8 @@
 stages:
-  - build-jar
-  - build-docker
+  - build
   - test-sonar
   - test
   - release
-  - notification
   - deploy
 include:
   - template: Security/SAST.gitlab-ci.yml
@@ -15,22 +13,18 @@ variables:
   MAVEN_REPO_PATH: ./.m2/repository
   JAVA_OPTS: -XX:MaxRAMPercentage=90
 
-build-jar:
-  stage: build-jar
+build-code-job:
+  stage: build
+  image: docker:stable-dind
+  services:
+    - docker:dind
+  before_script:
+    - until docker info; do sleep 1; done
+    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
   script:
-    - echo "ARTIFACT_JOB_ID=${CI_JOB_ID}" > CI_JOB_ID.txt
-    - cd ${CI_PROJECT_DIR}/backend
-    - mvn package -Dversion.application=${VERSION} -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2/repository
-    - mkdir ${CI_PROJECT_DIR}/sausage-store-${VERSION}
-    - cp ${CI_PROJECT_DIR}/backend/target/sausage-store-${VERSION}.jar ${CI_PROJECT_DIR}/backend/sausage-store-${VERSION}.jar
-    - mv ${CI_PROJECT_DIR}/backend/target/sausage-store-${VERSION}.jar ${CI_PROJECT_DIR}/sausage-store-${VERSION}/sausage-store-${VERSION}.jar
-  artifacts:
-    paths:
-      - sausage-store-${VERSION}/sausage-store-${VERSION}.jar
-      - backend/sausage-store-${VERSION}.jar
-      - ${CI_PROJECT_DIR}/.m2/
-    reports:
-      dotenv: CI_JOB_ID.txt
+    - cd backend-report
+    - docker build --cache-from ${CI_REGISTRY}/${CI_PROJECT_PATH}/sausage-backend-report:latest --build-arg APP_VERSION=${VERSION} -t ${CI_REGISTRY}/${CI_PROJECT_PATH}/sausage-backend-report:${VERSION} .
+    - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}/sausage-backend-report:${VERSION}
 
 spotbugs-sast:
   variables:
@@ -49,7 +43,7 @@ sonarqube-backend:
     GIT_DEPTH: "0"
   stage: test-sonar
   script:
-    - cd backend
+    - cd backend-report
     - >
       mvn verify sonar:sonar -Dsonar.qualitygate.wait=true
       -Dsonar.projectName=${SONAR_BACKEND_PROJECT_NAME}
@@ -58,49 +52,21 @@ sonarqube-backend:
       -Dsonar.login=${SONAR_BACKEND_LOGIN}
   allow_failure: true
 
-build-backend:
-  stage: build-docker
-  image: docker:20.10.12-dind-rootless
+upload-release:
+  stage: release
+  image: docker:stable-dind
+  services:
+    - docker:dind
   before_script:
     - until docker info; do sleep 1; done
-    # переменные CI_REGISTRY_USER, CI_REGISTRY_PASSWORD, CI_REGISTRY генерятся Гитлабом, их задавать не надо
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
   script:
-    - ls -la
-    - mv ./sausage-store-${VERSION}/sausage-store-${VERSION}.jar ./backend/sausage-store.jar
-    - cd backend
-    - ls -la
-    - >
-      docker build
-      --build-arg VERSION=$VERSION
-      --tag $CI_REGISTRY_IMAGE/sausage-backend:${VERSION}
-      .
-    - docker push $CI_REGISTRY_IMAGE/sausage-backend:${VERSION}
-  dependencies:
-    - build-jar
-
-release:
-  stage: release
-  script:
-    - cd backend
-    - mvn deploy -DskipTests -Dversion.application=${VERSION} -Dmaven.repo.local=${MAVEN_REPO_PATH} -s settings.xml
-  rules:
-    - changes:
-        - backend/*
-
-upload-backend-latest:
-  variables:
-    GIT_STRATEGY: none
-  image: docker:20.10.12-dind-rootless
-  stage: release
-  before_script:
-    - until docker info; do sleep 1; done
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  script:
-    - >
-      docker pull $CI_REGISTRY_IMAGE/sausage-backend:${VERSION} &&
-      docker tag $CI_REGISTRY_IMAGE/sausage-backend:${VERSION} $CI_REGISTRY_IMAGE/sausage-backend:latest &&
-      docker push $CI_REGISTRY_IMAGE/sausage-backend:latest
+    - docker pull ${CI_REGISTRY}/${CI_PROJECT_PATH}/sausage-backend-report:${VERSION}
+    - docker tag ${CI_REGISTRY}/${CI_PROJECT_PATH}/sausage-backend-report:${VERSION}
+      ${CI_REGISTRY}/${CI_PROJECT_PATH}/sausage-backend-report:latest
+    - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}/sausage-backend-report:latest
+  after_script:
+    - docker logout ${CI_REGISTRY}
 
 deploy-backend:
   stage: deploy
@@ -128,4 +94,3 @@ deploy-backend:
     name: staging
     url: https://${DEV_HOST}
   when: manual
-
