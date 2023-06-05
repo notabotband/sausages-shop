@@ -20,13 +20,13 @@ build-jar:
     - echo "ARTIFACT_JOB_ID=${CI_JOB_ID}" > CI_JOB_ID.txt
     - cd ${CI_PROJECT_DIR}/backend-report
     - mvn package -Dversion.application=${VERSION} -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2/repository
-    - mkdir ${CI_PROJECT_DIR}/sausage-store-${VERSION}
-    - cp ${CI_PROJECT_DIR}/backend-report/target/sausage-store-${VERSION}.jar ${CI_PROJECT_DIR}/backend-report/sausage-store-${VERSION}.jar
-    - mv ${CI_PROJECT_DIR}/backend-report/target/sausage-store-${VERSION}.jar ${CI_PROJECT_DIR}/sausage-store-${VERSION}/sausage-store-${VERSION}.jar
+    - mkdir ${CI_PROJECT_DIR}/sausage-store-report-${VERSION}
+    - cp ${CI_PROJECT_DIR}/backend-report/target/sausage-store-report-${VERSION}.jar ${CI_PROJECT_DIR}/backend-report/sausage-store-report-${VERSION}.jar
+    - mv ${CI_PROJECT_DIR}/backend-report/target/sausage-store-report-${VERSION}.jar ${CI_PROJECT_DIR}/sausage-store-report-${VERSION}/sausage-store-report-${VERSION}.jar
   artifacts:
     paths:
-      - sausage-store-${VERSION}/sausage-store-${VERSION}.jar
-      - backend-report/sausage-store-${VERSION}.jar
+      - sausage-store-report-${VERSION}/sausage-store-report-${VERSION}.jar
+      - backend-report/sausage-store-report-${VERSION}.jar
       - ${CI_PROJECT_DIR}/.m2/
     reports:
       dotenv: CI_JOB_ID.txt
@@ -66,7 +66,7 @@ build-backend:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - ls -la
-    - mv ./sausage-store-${VERSION}/sausage-store-${VERSION}.jar ./backend-report/sausage-store.jar
+    - mv ./sausage-store-report-${VERSION}/sausage-store-report-${VERSION}.jar ./backend-report/sausage-report-store.jar
     - cd backend-report
     - ls -la
     - >
