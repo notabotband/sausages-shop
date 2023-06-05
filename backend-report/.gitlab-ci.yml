@@ -23,8 +23,8 @@ build-code-job:
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
   script:
     - cd backend-report
-    - docker build --cache-from ${CI_REGISTRY}/${CI_PROJECT_PATH}/${CI_PROJECT_NAME}-backend-report:latest --build-arg APP_VERSION=${VERSION} -t ${CI_REGISTRY}/${CI_PROJECT_PATH}/${CI_PROJECT_NAME}-backend-report:${CI_COMMIT_SHORT_SHA} .
-    - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}/${CI_PROJECT_NAME}-backend-report:${CI_COMMIT_SHORT_SHA}
+    - docker build --cache-from ${CI_REGISTRY}/${CI_PROJECT_PATH}/sausage-backend-report:latest --build-arg APP_VERSION=${VERSION} -t ${CI_REGISTRY}/${CI_PROJECT_PATH}/sausage-backend-report:${VERSION} .
+    - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}/sausage-backend-report:${VERSION}
 
 spotbugs-sast:
   variables:
@@ -61,10 +61,10 @@ upload-release:
     - until docker info; do sleep 1; done
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
   script:
-    - docker pull ${CI_REGISTRY}/${CI_PROJECT_PATH}/${CI_PROJECT_NAME}-backend-report:${CI_COMMIT_SHORT_SHA}
-    - docker tag ${CI_REGISTRY}/${CI_PROJECT_PATH}/${CI_PROJECT_NAME}-backend-report:${CI_COMMIT_SHORT_SHA}
-      ${CI_REGISTRY}/${CI_PROJECT_PATH}/${CI_PROJECT_NAME}-backend-report:latest
-    - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}/${CI_PROJECT_NAME}-backend-report:latest
+    - docker pull ${CI_REGISTRY}/${CI_PROJECT_PATH}/sausage-backend-report:${VERSION}
+    - docker tag ${CI_REGISTRY}/${CI_PROJECT_PATH}/sausage-backend-report:${VERSION}
+      ${CI_REGISTRY}/${CI_PROJECT_PATH}/sausage-backend-report:latest
+    - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}/sausage-backend-report:latest
   after_script:
     - docker logout ${CI_REGISTRY}
 
