@@ -1,0 +1,129 @@
+stages:
+  - build-jar
+  - build-docker
+  - test-sonar
+  - test
+  - release
+  - deploy
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - project: "templates/ci"
+    file: "DockerInDockerTemplate.yml"
+variables:
+  VERSION: 1.0.${CI_PIPELINE_ID}
+  MAVEN_REPO_PATH: ./.m2/repository
+  JAVA_OPTS: -XX:MaxRAMPercentage=90
+
+build-jar:
+  stage: build-jar
+  script:
+    - echo "ARTIFACT_JOB_ID=${CI_JOB_ID}" > CI_JOB_ID.txt
+    - cd ${CI_PROJECT_DIR}/backend-report
+    - mvn package -Dversion.application=${VERSION} -Dmaven.repo.local=${CI_PROJECT_DIR}/.m2/repository
+    - mkdir ${CI_PROJECT_DIR}/sausage-store-${VERSION}
+    - cp ${CI_PROJECT_DIR}/backend-report/target/sausage-store-${VERSION}.jar ${CI_PROJECT_DIR}/backend-report/sausage-store-${VERSION}.jar
+    - mv ${CI_PROJECT_DIR}/backend-report/target/sausage-store-${VERSION}.jar ${CI_PROJECT_DIR}/sausage-store-${VERSION}/sausage-store-${VERSION}.jar
+  artifacts:
+    paths:
+      - sausage-store-${VERSION}/sausage-store-${VERSION}.jar
+      - backend-report/sausage-store-${VERSION}.jar
+      - ${CI_PROJECT_DIR}/.m2/
+    reports:
+      dotenv: CI_JOB_ID.txt
+
+spotbugs-sast:
+  variables:
+    COMPILE: "true"
+    MAVEN_REPO_PATH: ${CI_PROJECT_DIR}/.m2/repository
+
+sonarqube-backend:
+  image:
+    name: maven:3.8-openjdk-16
+  variables:
+    SONAR_HOST_URL: "${SONARQUBE_URL}"
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    SONAR_BACKEND_LOGIN: "${SONAR_BACKEND_LOGIN}"
+    SONAR_BACKEND_PROJECT_KEY: "${SONAR_BACKEND_PROJECT_KEY}"
+    SONAR_BACKEND_PROJECT_NAME: "${SONAR_BACKEND_PROJECT_NAME}"
+    GIT_DEPTH: "0"
+  stage: test-sonar
+  script:
+    - cd backend-report
+    - >
+      mvn verify sonar:sonar -Dsonar.qualitygate.wait=true
+      -Dsonar.projectName=${SONAR_BACKEND_PROJECT_NAME}
+      -Dsonar.projectKey=${SONAR_BACKEND_PROJECT_KEY}
+      -Dsonar.host.url=${SONARQUBE_URL}
+      -Dsonar.login=${SONAR_BACKEND_LOGIN}
+  allow_failure: true
+
+build-backend:
+  stage: build-docker
+  image: docker:20.10.12-dind-rootless
+  before_script:
+    - until docker info; do sleep 1; done
+    # переменные CI_REGISTRY_USER, CI_REGISTRY_PASSWORD, CI_REGISTRY генерятся Гитлабом, их задавать не надо
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - ls -la
+    - mv ./sausage-store-${VERSION}/sausage-store-${VERSION}.jar ./backend-report/sausage-store.jar
+    - cd backend-report
+    - ls -la
+    - >
+      docker build
+      --build-arg VERSION=$VERSION
+      --tag $CI_REGISTRY_IMAGE/sausage-backend-report:${VERSION}
+      .
+    - docker push $CI_REGISTRY_IMAGE/sausage-backend-report:${VERSION}
+  dependencies:
+    - build-jar
+
+release:
+  stage: release
+  script:
+    - cd backend-report
+    - mvn deploy -DskipTests -Dversion.application=${VERSION} -Dmaven.repo.local=${MAVEN_REPO_PATH} -s settings.xml
+  rules:
+    - changes:
+        - backend-report/*
+
+upload-backend-latest:
+  variables:
+    GIT_STRATEGY: none
+  image: docker:20.10.12-dind-rootless
+  stage: release
+  before_script:
+    - until docker info; do sleep 1; done
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - >
+      docker pull $CI_REGISTRY_IMAGE/sausage-backend-report:${VERSION} &&
+      docker tag $CI_REGISTRY_IMAGE/sausage-backend-report:${VERSION} $CI_REGISTRY_IMAGE/sausage-backend-report:latest &&
+      docker push $CI_REGISTRY_IMAGE/sausage-backend-report:latest
+
+deploy-backend:
+  stage: deploy
+  image: vault:1.11.3
+  before_script:
+    - apk add openssh-client bash
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - echo -e "SPRING_CLOUD_VAULT_TOKEN=$SPRING_CLOUD_VAULT_TOKEN\nSPRING_CLOUD_VAULT_HOST=$SPRING_CLOUD_VAULT_HOST\n" > .env_file
+    - scp -r ./.env_file ./sausage-store.service ./docker-compose.yml ${DEV_USER}@${DEV_HOST}:/home/${DEV_USER}/
+    - ssh ${DEV_USER}@${DEV_HOST}
+      "export "VERSION=${VERSION}";
+      export "DEV_USER=${DEV_USER}";
+      export "SPRING_CLOUD_VAULT_TOKEN=${SPRING_CLOUD_VAULT_TOKEN}";
+      export "SPRING_CLOUD_VAULT_HOST=${nSPRING_CLOUD_VAULT_HOST}";
+      export "REGISTRY_ACCESS_TOKEN=${REGISTRY_ACCESS_TOKEN}";
+      export "REGISTRY_USER=${REGISTRY_USER}";
+      /bin/bash -s " < ./deploy-compose.sh
+  environment:
+    name: staging
+    url: https://${DEV_HOST}
+  when: manual
