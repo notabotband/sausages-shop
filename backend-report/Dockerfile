@@ -16,5 +16,5 @@ RUN curl https://storage.yandexcloud.net/cloud-certs/CA.pem -o YandexInternalRoo
 
 COPY --from=builder /usr/src/app/target/sausage-store-report-1.0.0.jar sausage-store-report.jar
 
-ENTRYPOINT ["java", "-jar", "./sausage-store-report.jar"]
-EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "./sausage-store-report.jar", "--service.port=8081"]
+EXPOSE 8081

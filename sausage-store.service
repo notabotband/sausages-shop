@@ -1,0 +1,15 @@
+[Unit]
+Description=sausage-store
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+User=root
+WorkingDirectory=/home/student/
+ExecStartPre=/usr/bin/docker-compose down
+ExecStart=/usr/bin/docker-compose --env-file /home/student/.env_file up
+ExecStop=/usr/bin/docker-compose down
+
+[Install]
+WantedBy=multi-user.target
