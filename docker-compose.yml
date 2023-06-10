@@ -17,7 +17,6 @@ services:
   green:
     image: gitlab.praktikum-services.ru:5050/std-013-59/sausage-store/sausage-backend:latest
     restart: always
-    container_name: green
     healthcheck:
       test: curl --fail -s http://localhost:8080/actuator/health
       interval: 30s
@@ -34,7 +33,6 @@ services:
   blue:
     image: gitlab.praktikum-services.ru:5050/std-013-59/sausage-store/sausage-backend:latest
     restart: always
-    container_name: blue
     healthcheck:
       test: curl --fail -s http://localhost:8080/actuator/health
       interval: 30s
