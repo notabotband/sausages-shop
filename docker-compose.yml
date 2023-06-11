@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.7'
 
 services:
 
@@ -23,7 +23,6 @@ services:
       timeout: 10s
       start_period: 60s
       retries: 6
-    container_name: green
     environment:
       SPRING_CLOUD_VAULT_TOKEN: $SPRING_CLOUD_VAULT_TOKEN
       SPRING_CLOUD_VAULT_HOST: $SPRING_CLOUD_VAULT_HOST
@@ -40,7 +39,6 @@ services:
       timeout: 10s
       start_period: 60s
       retries: 6
-    container_name: blue
     environment:
       SPRING_CLOUD_VAULT_TOKEN: $SPRING_CLOUD_VAULT_TOKEN
       SPRING_CLOUD_VAULT_HOST: $SPRING_CLOUD_VAULT_HOST
