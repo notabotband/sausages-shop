@@ -21,7 +21,7 @@ public class SausageApplication {
         return args -> {
             productService.save(new Product(1L, "Сливочная", 320.00, "https://storage.yandexcloud.net/stas-antipov/6.jpg"));
             productService.save(new Product(2L, "Особая", 179.00, "https://storage.yandexcloud.net/stas-antipov/5.jpg"));
-            productService.save(new Product(3L, "Молочная", 225.00, "https://storage.yandexcloud.net/stas-antipov/4.jpg"));
+            productService.save(new Product(3L, "Молочная", 245.00, "https://storage.yandexcloud.net/stas-antipov/4.jpg"));
             productService.save(new Product(4L, "Нюренбергская", 315.00, "https://storage.yandexcloud.net/stas-antipov/3.jpg"));
             productService.save(new Product(5L, "Мюнхенская", 330.00, "https://storage.yandexcloud.net/stas-antipov/2.jpg"));
             productService.save(new Product(6L, "Американская", 189.00, "https://storage.yandexcloud.net/stas-antipov/1.jpg"));
