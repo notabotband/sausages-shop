@@ -11,8 +11,10 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx.tmpl:/app/nginx.tmpl
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
     ports:
       - '80:80'
+      - '443:443'
 
   green:
     image: gitlab.praktikum-services.ru:5050/std-013-59/sausage-store/sausage-backend:latest
