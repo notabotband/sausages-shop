@@ -9,8 +9,10 @@ services:
       DEFAULT_HOST: sausage-backend
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./nginx.tmpl:/app/nginx.tmpl
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
     ports:
       - '80:80'
       - '443:443'
