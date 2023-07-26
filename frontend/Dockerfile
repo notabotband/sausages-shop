@@ -7,8 +7,8 @@ COPY ./src ./src
 RUN npm run build
 
 #FROM nginxproxy/nginx-proxy:1.3.1
-#
-#COPY --from=builder /usr/src/app/dist/frontend /usr/share/nginx/html
+
+COPY --from=builder /usr/src/app/dist/frontend /usr/share/nginx/html
 
 EXPOSE 80
 
