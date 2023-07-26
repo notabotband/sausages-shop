@@ -8,10 +8,11 @@ services:
     environment:
       DEFAULT_HOST: sausage-backend
     volumes:
-      - unix://$XDG_RUNTIME_DIR/docker.sock:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx.tmpl:/app/nginx.tmpl
     ports:
       - '80:80'
+      - '443:443'
 
   green:
     image: gitlab.praktikum-services.ru:5050/std-013-59/sausage-store/sausage-backend:latest
