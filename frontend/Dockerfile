@@ -1,14 +1,12 @@
-FROM alpine:3.15 AS builder
+#build front
+FROM node:14.17.3 as builder
+# Create app directory
 WORKDIR /usr/src/app
-COPY *.json ./
-RUN apk add --no-cache npm==8.1.3-r0 \
-    && npm install
-COPY ./src ./src
-RUN npm run build
+COPY . .
+RUN npm install && npm run build && ls -la /usr/src/app
 
-#FROM nginxproxy/nginx-proxy:1.3.1
-
-COPY --from=builder /usr/src/app/dist/frontend /usr/share/nginx/html
-
-EXPOSE 80
-
+#release front
+FROM nginx:1.21.6-alpine
+WORKDIR /app
+COPY --from=builder /usr/src/app/dist/* /usr/share/nginx/html/
+EXPOSE 8080
