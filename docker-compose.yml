@@ -1,7 +1,6 @@
 version: '3.7'
 
 services:
-
   frontend:
     image: gitlab.praktikum-services.ru:5050/std-013-59/sausage-store/sausage-frontend:latest
     restart: always
@@ -13,6 +12,7 @@ services:
       - ./nginx.tmpl:/app/nginx.tmpl
     ports:
       - '80:80'
+      - '443:443'
 
   green:
     image: gitlab.praktikum-services.ru:5050/std-013-59/sausage-store/sausage-backend:latest
@@ -51,5 +51,6 @@ services:
     restart: always
     container_name: sausage-backend-report
     environment:
-      SPRING_VAULT_TOKEN: $SPRING_CLOUD_VAULT_TOKEN
-      SPRING_VAULT_HOST: $SPRING_CLOUD_VAULT_HOST
+      SPRING_CLOUD_VAULT_TOKEN: $SPRING_CLOUD_VAULT_TOKEN
+      SPRING_CLOUD_VAULT_HOST: $SPRING_CLOUD_VAULT_HOST
+
